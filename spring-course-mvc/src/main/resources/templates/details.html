@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title th:text="${title}"></title>
+</head>
+<body>
+<h1 th:text="${title}"></h1>
+<ul>
+<li th:text="${'Name: ' + name}"></li>
+<li th:text="${'Last Name: ' + lastname}"></li>
+<li th:text="${'Full name: ' + name + ' ' + lastname}"></li>
+</ul>
+
+<h1>Pasando datos desde una clase</h1>
+<ul>
+<li th:text="${user.name}"></li>
+<li th:text="${user.lastname}"></li>
+
+<li th:if="${user.email != null}" th:text="${user.email}"></li>
+<li th:if="${user.email == null}" th:text="${'No tiene email'}"></li>
+</ul>
+
+<a th:href="@{/list}">VER LISTADO</a>
+<br>
+<a th:href="@{'/api/param/foo?text=' + ${title}}">VER MENSAJE REQUEST 1</a>
+<br>
+<a th:href="@{/api/param/foo?text=Hola que hace}">VER MENSAJE REQUEST 2</a>
+<br>
+<a th:href="@{/api/param/foo(text='Hola que hace')}">VER MENSAJE REQUEST 3</a>
+<br>
+<a th:href="@{/api/param/foo2(text='Hola como anda', code=123)}">VER MENSAJE REQUEST 4</a>
+<br>
+<a th:href="@{/api/var/qux/MENSAJITO LOCO}">VER MENSAJE PATH VARIABLE 1</a>
+<br>
+<a th:href="@{'/api/var/qux/' + ${title}}">VER MENSAJE PATH VARIABLE 2</a>
+<br>
+<a th:href="@{'/api/var/qux/' + 'PUES ESO ES TODO AMIGOS'}">VER MENSAJE PATH VARIABLE 3</a>
+
+<!-- <div th:if="${listUser.isEmpty()}">No elements</div> -->
+<!-- 	<table th:if="${!listUser.isEmpty()}"> -->
+<!-- 		<thead> -->
+<!-- 			<tr> -->
+<!-- 				<th>Name</th> -->
+<!-- 				<th>Lastname</th> -->
+<!-- 				<th>Email</th> -->
+<!-- 			</tr> -->
+<!-- 		</thead> -->
+<!-- 		<tbody> -->
+<!-- 			<tr th:each="user: ${listUser}"> -->
+<!-- 				<td th:text="${user.name}"></td> -->
+<!-- 				<td th:text="${user.lastname}"></td> -->
+<!-- 				<td th:text="${user.email != null ? user.email : 'Not Available'}"></td> -->
+<!-- 			</tr> -->
+<!-- 		</tbody> -->
+<!-- 	</table> -->
+
+</body>
+</html>
