@@ -2,7 +2,7 @@ package com.fabrizio.spring.course.di.model;
 
 import java.math.BigDecimal;
 
-public class Product {
+public class Product implements Cloneable{
 	private Long id;
 	private String name;
 	private BigDecimal price;
@@ -35,6 +35,15 @@ public class Product {
 	}
 	public void setPrice(BigDecimal price) {
 		this.price = price;
+	}
+
+	@Override
+	public Object clone() {
+		try {
+			return super.clone();
+		} catch (CloneNotSupportedException e) {
+			return new Product(getId(), getName(), getPrice());
+		}
 	}
 	
 	

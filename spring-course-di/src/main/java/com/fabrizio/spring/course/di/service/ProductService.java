@@ -15,10 +15,12 @@ public class ProductService{
 	public List<Product> findAll() {
 		return repository.findAll().stream()
 				.map(p -> {
-					BigDecimal priceImp = p.getPrice()
+					BigDecimal priceTax = p.getPrice()
 							.multiply(new BigDecimal("1.25"))
 							.setScale(2, RoundingMode.HALF_UP);
-					Product product = new Product(p.getId(), p.getName(), priceImp);
+//					Product product = new Product(p.getId(), p.getName(), priceImp);
+					Product product = (Product) p.clone(); 
+					product.setPrice(priceTax);
 					return product;
 					})
 				.collect(Collectors.toList());
