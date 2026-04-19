@@ -4,8 +4,11 @@ import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.List;
 
+import org.springframework.stereotype.Component;
+
 import com.fabrizio.spring.course.di.model.Product;
 
+@Component
 public class ProductRepositoryImpl implements ProductRepository{
 
 	private List<Product> data;

@@ -5,12 +5,16 @@ import java.math.RoundingMode;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import com.fabrizio.spring.course.di.model.Product;
-import com.fabrizio.spring.course.di.repository.ProductRepositoryImpl;
+import com.fabrizio.spring.course.di.repository.ProductRepository;
 
+@Component
 public class ProductServiceImpl implements ProductService{
 	
-	private ProductRepositoryImpl repository = new ProductRepositoryImpl();
+	@Autowired
+	private ProductRepository repository;
 	
 	@Override
 	public List<Product> findAll() {
