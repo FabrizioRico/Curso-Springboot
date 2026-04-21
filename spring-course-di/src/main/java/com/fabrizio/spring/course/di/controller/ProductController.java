@@ -14,7 +14,7 @@ import com.fabrizio.spring.course.di.service.ProductService;
 @RestController
 @RequestMapping("/api")
 public class ProductController {
-	
+
 	@Autowired
 	private ProductService service;
 

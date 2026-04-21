@@ -6,16 +6,22 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Service;
+
 import com.fabrizio.spring.course.di.model.Product;
 import com.fabrizio.spring.course.di.repository.ProductRepository;
 
-@Component
+@Service
 public class ProductServiceImpl implements ProductService{
-	
-	@Autowired
+//	@Autowired
+//	@Qualifier("productQux")
 	private ProductRepository repository;
-	
+
+	public ProductServiceImpl(@Qualifier("productQux") ProductRepository repository) {
+		this.repository = repository;
+	}
+
 	@Override
 	public List<Product> findAll() {
 		return repository.findAll().stream()
