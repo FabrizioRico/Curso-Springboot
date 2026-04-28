@@ -9,25 +9,32 @@ import org.springframework.core.io.Resource;
 
 import com.fabrizio.spring.course.di.model.Product;
 
-import tools.jackson.core.JacksonException;
 import tools.jackson.databind.ObjectMapper;
 
 public class ProductRepositoryJson implements ProductRepository{
 
 	private List<Product> listProduct;
 	
-	public ProductRepositoryJson() {
-		Resource resource = new ClassPathResource("data/product.json");
+	private void readValueJson(Resource resource) {
 		ObjectMapper objectMapper = new ObjectMapper();
 		
 		try {
-			listProduct = Arrays.asList(objectMapper.readValue(resource.getFile(), Product[].class));
-		} catch (JacksonException e) {
-			e.printStackTrace();
+			listProduct = Arrays.asList(objectMapper.readValue(resource.getInputStream(), Product[].class));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
+	
+	public ProductRepositoryJson() {
+		Resource resource = new ClassPathResource("json/product.json");
+		readValueJson(resource);
+	}
+	
+	public ProductRepositoryJson(Resource resource) {
+		readValueJson(resource);
+	}
+	
+
 	
 	@Override
 	public List<Product> findAll() {
