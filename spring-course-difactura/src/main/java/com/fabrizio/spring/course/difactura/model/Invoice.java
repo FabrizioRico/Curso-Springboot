@@ -1,5 +1,6 @@
 package com.fabrizio.spring.course.difactura.model;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +34,17 @@ public class Invoice {
 	}
 	public void setItems(List<Item> items) {
 		this.items = items;
+	}
+	
+	public BigDecimal getTotal() {
+//		BigDecimal cero = BigDecimal.ZERO;
+//		for (Item item : items) {
+//		cero = cero.add(item.getImporte());
+//		}
+//		return cero;asdsad
+		return items.stream()
+				.map(item -> item.getImporte())
+				.reduce(BigDecimal.ZERO, BigDecimal::add);
 	}
 	
 }

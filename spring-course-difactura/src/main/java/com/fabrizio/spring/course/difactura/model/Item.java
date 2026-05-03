@@ -1,5 +1,7 @@
 package com.fabrizio.spring.course.difactura.model;
 
+import java.math.BigDecimal;
+
 public class Item {
 
 	private Product product;
@@ -26,5 +28,9 @@ public class Item {
 	}
 	public void setQuantity(Integer quantity) {
 		this.quantity = quantity;
+	}
+	
+	public BigDecimal getImporte() {
+		return product.getPrice().multiply(BigDecimal.valueOf(quantity));
 	}
 }

@@ -2,6 +2,9 @@ package com.fabrizio.spring.course.difactura.model;
 
 import java.math.BigDecimal;
 
+import org.springframework.stereotype.Component;
+
+@Component
 public class Product {
 
 	private String name;
