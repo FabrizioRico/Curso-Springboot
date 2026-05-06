@@ -4,18 +4,46 @@ import java.math.BigDecimal;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+import org.springframework.web.context.annotation.RequestScope;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+import jakarta.annotation.PostConstruct;
+import jakarta.annotation.PreDestroy;
 
 @Component
 public class Invoice {
 	
 	@Autowired
 	private Client client;
-	@Value("${invoice.description}")
+	
+	@Value("${invoice.description.office}")
 	private String description;
+	
 	@Autowired
+	@Qualifier("default")
 	private List<Item> items;
+	
+	
+	public Invoice() {
+		System.out.println(client);
+		System.out.println(description);
+	}
+
+	@PostConstruct
+	public void innit() {
+		System.out.println("Creando el componente de la factura");
+		client.setName(client.getName() + " Omar");
+		description = description + " del cliente " + client.getName() + client.getLastname();
+	}
+	
+	@PreDestroy
+	public void destroy() {
+		System.out.println("Destruyendo el componente Invoice");
+	}
 	
 	public Client getClient() {
 		return client;
