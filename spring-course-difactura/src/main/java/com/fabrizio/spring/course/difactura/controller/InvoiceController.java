@@ -22,7 +22,9 @@ public class InvoiceController {
 		
 		c.setName(invoice.getClient().getName());
 		c.setLastname(invoice.getClient().getLastname());
-		i.setClient(invoice.getClient());
+		
+		i.setClient(c);
+		
 		i.setDescription(invoice.getDescription());
 		i.setItems(invoice.getItems());
 		
