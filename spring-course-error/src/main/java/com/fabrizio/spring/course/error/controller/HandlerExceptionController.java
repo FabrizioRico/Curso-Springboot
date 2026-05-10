@@ -6,12 +6,14 @@ import java.util.Map;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotWritableException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.NoHandlerFoundException;
 
-import com.fabrizio.spring.course.error.model.Error;
+import com.fabrizio.spring.course.error.exceptions.UserNotFoundException;
+import com.fabrizio.spring.course.error.model.error.Error;
 
 @RestControllerAdvice
 public class HandlerExceptionController {
@@ -47,6 +49,20 @@ public class HandlerExceptionController {
 		error.setMessage(ex.getMessage());
 		error.setStatus(HttpStatus.NOT_FOUND.value());
 		return ResponseEntity.status(404).body(error);
+	}
+	
+	@ExceptionHandler({
+		HttpMessageNotWritableException.class,
+		UserNotFoundException.class})
+	@ResponseStatus(HttpStatus.NOT_FOUND)
+	public Map<String, Object> userNotFoundException(Exception ex){
+		Map<String, Object> error = new HashMap<>();
+		error.put("date", new Date());
+		error.put("error", "El rol o usuario no existen");
+		error.put("message", ex.getMessage());
+		error.put("status", HttpStatus.NOT_FOUND.value());
+		
+		return error;
 	}
 	
 }

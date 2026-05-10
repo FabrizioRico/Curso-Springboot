@@ -1,24 +1,19 @@
 package com.fabrizio.spring.course.error.service;
 
-import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.fabrizio.spring.course.error.exceptions.UserNotFoundException;
+import com.fabrizio.spring.course.error.model.domain.Role;
 import com.fabrizio.spring.course.error.model.domain.User;
 
 @Service
 public class UserServiceImpl implements UserService{
 	
+	@Autowired
 	private List<User> listUser;
-	
-	public UserServiceImpl() {
-		this.listUser = new ArrayList<>();
-		listUser.add(new User(1L, "Fabrizio", "Risco"));
-		listUser.add(new User(2L, "Dexter", "Morgan"));
-		listUser.add(new User(3L, "David", "Bowiw"));
-		listUser.add(new User(4L, "Trent", "Reznor"));
-	}
 
 	@Override
 	public List<User> findAll() {
@@ -27,14 +22,26 @@ public class UserServiceImpl implements UserService{
 
 	@Override
 	public User findById(Long id) {
-		User userI = null;
-		for (User user : listUser) {
-			if (user.getId().equals(id)) {
-				userI = user;
-				break;
-			}
-		}
-		return userI;
+		return listUser.stream()
+				.filter(u -> u.getId().equals(id))
+				.findFirst()
+				.map(u -> {
+					if (u.getRole() == null) {
+						u.setRole(new Role("No tiene un rol asignado"));
+					}
+					return u;
+				})
+				.orElseThrow(() -> new UserNotFoundException("El usuario no existe"));
+//		for (User u : listUser) {
+//			if (u.getId().equals(id)) {
+//				user = u;
+//				break;
+//			}
+//		}
+//		if (user == null) {
+//			throw new UserNotFoundException("El usuario no existe");
+//		} else if(user.getRole() == null) {
+//			user.setRole(new Role("No tiene un rol asignado"));
+//		}
 	}
-
 }

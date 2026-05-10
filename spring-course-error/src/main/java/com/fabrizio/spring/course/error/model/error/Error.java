@@ -1,4 +1,4 @@
-package com.fabrizio.spring.course.error.model;
+package com.fabrizio.spring.course.error.model.error;
 
 import java.util.Date;
 
