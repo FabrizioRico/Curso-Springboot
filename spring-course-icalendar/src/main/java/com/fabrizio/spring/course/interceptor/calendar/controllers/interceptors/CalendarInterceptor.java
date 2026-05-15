@@ -1,6 +1,9 @@
 package com.fabrizio.spring.course.interceptor.calendar.controllers.interceptors;
 
 import java.util.Calendar;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.jspecify.annotations.Nullable;
 import org.springframework.beans.factory.annotation.Value;
@@ -10,13 +13,14 @@ import org.springframework.web.servlet.ModelAndView;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import tools.jackson.databind.ObjectMapper;
 
 @Component
 public class CalendarInterceptor implements HandlerInterceptor{
 	
 	@Value("${config.calendar.open}")
 	private Integer open;
-	@Value("${config.calendar.open}")
+	@Value("${config.calendar.close}")
 	private Integer close;
 
 	@Override
@@ -24,19 +28,35 @@ public class CalendarInterceptor implements HandlerInterceptor{
 			throws Exception {
 		Calendar calendar = Calendar.getInstance();
 		int hour = calendar.get(Calendar.HOUR_OF_DAY);
+		System.out.println(hour);
 		
 		if(hour >= open && hour < close) {
 			StringBuilder message = new StringBuilder("Bienvenidos a atencion al cliente");
-			message.append(", atendemos desde las");
+			message.append(", atendemos desde las ");
 			message.append(open);
 			message.append(" horas hasta las ");
 			message.append(close);
-			message.append(" horas.");
+			message.append(" horas. Gracias por su visita.");
 			request.setAttribute("message", message.toString());
 			
 			return true;
 		}
 
+		ObjectMapper mapper = new ObjectMapper();
+		Map<String, Object> data = new HashMap<>();
+		StringBuilder message = new StringBuilder("Cerrado: Esta fuera del horario de atencion. Por favor, visitenos entre las ");
+		message.append(open);
+		message.append(" y las ");
+		message.append(close);
+		message.append(" horas. Gracias");
+		
+		data.put("message", message.toString());
+		data.put("date", new Date());
+		
+		response.setContentType("application/json");
+		response.setStatus(401);
+		response.getWriter().write(mapper.writeValueAsString(data));
+		
 		return false;
 	}
 
